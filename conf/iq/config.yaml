@@ -1,0 +1,74 @@
+exp_name: ''  # 本次实验的名字与其他实验的区别，例如随机种子啥的
+project_name: ${env.name}
+
+####### cail_iq
+C_aware:
+  lr_Qvalue: 0.0001
+  lr_conf: 0.0001
+  traj_batch_size: 10
+  label_ratio: 0.05
+  sparse_sample: True # 标签轨迹间隔采样
+  pretrain_steps: 1000
+  detached_requires_grad: True
+  Qvalue: False
+#####
+
+cuda_deterministic: False
+device: None # to be specified later
+
+gamma: 0.99
+seed: 0
+pretrain: null
+
+num_seed_steps: 0 # Don't need seeding for IL (Use 1000 for RL)
+only_expert_states: False
+
+train:
+  batch: 32  # 智能体训练的batch_size
+  use_target: False
+  soft_update: False
+
+expert:
+  demos: 1
+  subsample_freq: 1
+  subopt_class_num: 1
+
+eval:
+  policy: 
+  threshold:
+  use_baselines: False
+  eps: 10  # 每一次评估循环中的评估次数
+  transfer: False
+  expert_env: ''
+
+env:
+  replay_mem: 50000
+  initial_mem: 1280
+  horizon: 1000  # eps_steps/horizon 即智能体与环境交互的最长步骤
+  eps_window: 100
+  learn_steps: 5e5
+  eval_interval: 5e3
+  
+  # use pixels
+  from_pixels: False
+
+method:
+  type: iq
+
+# Extra args
+log_interval: 100  # Log every this many steps
+log_dir: logs/
+save_interval: 5 # Save networks every this many epochs
+hydra_base_dir: ""
+eval_only: False
+
+# Do offline learning
+offline: False
+online: False
+# Number of actor updates per env step
+num_actor_updates: 1
+
+defaults:
+  - method: iq
+  - agent: softq
+  - env: cartpole

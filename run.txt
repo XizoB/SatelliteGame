@@ -1,0 +1,2 @@
+
+python main.py env=class_ctrl_SatelliteAvoidance-v0 agent=softq device=cpu seed=0 exp_name=seed_0

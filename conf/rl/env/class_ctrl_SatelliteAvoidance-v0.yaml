@@ -1,0 +1,15 @@
+# @package _global_
+
+env:
+  name: SatelliteAvoidance-v0
+  learn_steps: 1e6
+  eval_interval: 5e3
+  roullout_length : 1  # 每一次更新需要与环境交互采集的transition的数目
+  train_steps: 1  # 每一次更新循环中，价值与策略网络的数目
+
+eval:
+  policy: 
+  threshold: 500
+
+q_net:
+  _target_: agent.softq_models.SimpleQNetwork

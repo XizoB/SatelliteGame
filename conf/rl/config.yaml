@@ -1,0 +1,58 @@
+exp_name: ''  # 本次实验的名字与其他实验的区别，例如随机种子啥的
+project_name: ${env.name}  # wandb的project名字
+
+
+cuda_deterministic: False
+device: None # to be specified later
+
+gamma: 0.99
+seed: 0
+pretrain: null
+
+num_actor_updates: 1  # 每一次智能体更新时，策略网络更新的次数 Number of actor updates per env step
+num_seed_steps: 0 # 在训练前记忆池中随机探索的transition片段数目 Don't need seeding for IL (Use 1000 for RL) 
+
+# Extra args
+log_interval: 100  # Log every this many steps
+log_dir: logs/
+hydra_base_dir: ""
+eval_only: False
+
+
+train:
+  batch: 32  # 智能体训练的batch_size
+  use_target: False
+  soft_update: False
+
+expert:
+  demos: 1
+  subsample_freq: 1
+  subopt_class_num: 1
+
+eval:
+  policy: 
+  threshold:
+  use_baselines: False
+  eps: 10  # 每一次评估循环中的评估次数
+  transfer: False
+  expert_env: ''
+
+env:
+  replay_mem: 50000
+  initial_mem: 1280
+  horizon: 1000  # eps_steps/horizon 即智能体与环境交互的最长步骤
+  eps_window: 100
+  learn_steps: 1e6
+  eval_interval: 5e3
+  
+  # use pixels
+  from_pixels: False
+
+method:
+  type: rl
+
+
+defaults:
+  - method: rl
+  - agent: softq
+  - env: cartpole
